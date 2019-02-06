@@ -1,4 +1,5 @@
-FROM debian:stretch-slim
+FROM arm32v7/debian
+
 
 RUN set -ex \
     # Official Mopidy install for Debian/Ubuntu along with some extensions
@@ -11,7 +12,8 @@ RUN set -ex \
         gnupg \
         gstreamer1.0-alsa \
         gstreamer1.0-plugins-bad \
-        python-crypto \
+        python-crypto python-dev \
+	libxml2 libxml2-dev libxslt1-dev \
  && curl -L https://apt.mopidy.com/mopidy.gpg | apt-key add - \
  && curl -L https://apt.mopidy.com/mopidy.list -o /etc/apt/sources.list.d/mopidy.list \
  && apt-get update \
@@ -22,15 +24,16 @@ RUN set -ex \
  && curl -L https://bootstrap.pypa.io/get-pip.py | python - \
  && pip install -U six \
  && pip install \
-        Mopidy-Moped \
-        Mopidy-GMusic \
-        Mopidy-Pandora \
-        Mopidy-YouTube \
-        cryptography \
-        pyasn1 \
-        pyopenssl \
-        requests[security] \
-        youtube-dl \
+	 Mopidy-Iris \
+#        Mopidy-Moped \
+#        Mopidy-GMusic \
+#        Mopidy-Pandora \
+#        Mopidy-YouTube \
+#        cryptography \
+#        pyasn1 \
+#        pyopenssl \
+#        requests[security] \
+#        youtube-dl \
  && mkdir -p /var/lib/mopidy/.config \
  && ln -s /config /var/lib/mopidy/.config/mopidy \
     # Clean-up
